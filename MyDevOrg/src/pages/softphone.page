@@ -1,0 +1,79 @@
+<apex:page showHeader="false">
+
+<script type='text/javascript' src='https://c.la10.salesforceliveagent.com/content/g/js/35.0/deployment.js'></script>
+<script type='text/javascript'>
+liveagent.init('https://d.la10.salesforceliveagent.com/chat', '57228000000TNYK', '00D28000000e32X');
+</script>
+
+<a id="liveagent_button_online_57328000000TNZL" href="javascript://Chat" style="display: none;" onclick="liveagent.startChat('57328000000TNZL')"><!-- Online Chat Content --></a><div id="liveagent_button_offline_57328000000TNZL" style="display: none;"><!-- Offline Chat Content --></div><script type="text/javascript">
+if (!window._laq) { window._laq = []; }
+window._laq.push(function(){liveagent.showWhenOnline('57328000000TNZL', document.getElementById('liveagent_button_online_57328000000TNZL'));
+liveagent.showWhenOffline('57328000000TNZL', document.getElementById('liveagent_button_offline_57328000000TNZL'));
+});</script>
+
+<div id="liveagent_invite_button_57328000000TNZQ" style="display:none;"><span style="cursor: pointer; width: 100px; height: 20px; padding: 5px;" onclick="liveagent.startChat('57328000000TNZQ')">Start Chat</span><span style="cursor: pointer; width: 100px; height: 20px; padding: 5px;" onclick="liveagent.rejectChat('57328000000TNZQ')">Reject Chat</span></div>
+
+
+<apex:includeScript value="/support/api/29.0/interaction.js"/>
+<style>
+body {background-color:white;}
+</style>
+<script type="text/javascript">
+var isClickToDialEnabled = false; /* Variable that keeps track of click-to-dial
+state.
+* If true, click-to-dial is enabled, false
+otherwise.
+*/
+// Callback used with enableClickToDial API method.
+var enableClickToDialCallback = function (response) {
+isClickToDialEnabled = true;
+};
+// Callback used with disableClickToDial API method.
+var disableClickToDialCallback = function (response) {
+isClickToDialEnabled = false;
+};
+/* This function toggles the click-to-dial feature.
+* It enables the feature if it was disabled or
+* disables it if it was enabled.
+*/
+function toggleClickToDial() {
+if (isClickToDialEnabled) {
+// This function allows phone elements to be clickable on a Salesforce page.
+sforce.interaction.cti.disableClickToDial(disableClickToDialCallback);
+} else {
+// Enable click-to-dial.
+sforce.interaction.cti.enableClickToDial(enableClickToDialCallback);
+}
+}
+// Callback for screenPop API method.
+var screenPopCallback = function (response) {
+if (response.result) {
+alert('Screen pop was set successfully.');
+} else {
+alert('Screen pop failed.' + result.error);
+}
+};
+/* This function will screenPop to a contact in your organization.
+* When working on this sample code, please replace the contact Id with
+* a valid one from your organization.
+*/
+function screenPop() {
+var objectIdRelUrl = '/003D000000PS4iL'; // Replace the Id with a valid one from
+your organization.
+sforce.interaction.screenPop(objectIdRelUrl, true, screenPopCallback);
+}
+// Callback for onClickToDial API method.
+var onClickListener = function (response) {
+if (response.result) {
+alert("User clicked on a phone number. The data returned as JSON format is
+Tutorial #4: Integrating Phone Calls Step 1: Create an Open CTI SoftPhone
+: " + response.result );
+}
+};
+// Registers a callback function that will execute when a user clicks on a phone
+link.
+sforce.interaction.cti.onClickToDial(onClickListener);
+</script>
+<button onclick='toggleClickToDial();'>Toggle Click-to-Dial</button>
+<button onclick='screenPop();'>Screen Pop</button>
+</apex:page>
